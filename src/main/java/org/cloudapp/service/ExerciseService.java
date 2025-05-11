@@ -60,9 +60,23 @@ public class ExerciseService {
     // Create new exercise
     @Transactional
     public ExerciseDTO createExercise(ExerciseDTO exerciseDTO) {
-        Exercise exercise = convertToEntity(exerciseDTO);
-        Exercise savedExercise = exerciseRepository.save(exercise);
-        return convertToDTO(savedExercise);
+        try {
+            // Ensure ID is null for new entities
+            exerciseDTO.setId(null);
+
+            Exercise exercise = convertToEntity(exerciseDTO);
+            Exercise savedExercise = exerciseRepository.save(exercise);
+            return convertToDTO(savedExercise);
+        } catch (org.springframework.orm.ObjectOptimisticLockingFailureException e) {
+            // Specific handling for optimistic locking failures
+            throw new RuntimeException("Unable to create exercise due to data conflict. Please do not provide an ID for new exercises.", e);
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // Handles unique constraint violations or other data integrity issues
+            throw new RuntimeException("Unable to create exercise due to data integrity issue. Check that all required fields are provided correctly.", e);
+        } catch (Exception e) {
+            // Generic error handling
+            throw new RuntimeException("An unexpected error occurred while creating the exercise.", e);
+        }
     }
 
     // Update exercise

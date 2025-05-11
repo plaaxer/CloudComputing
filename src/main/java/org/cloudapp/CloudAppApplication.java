@@ -16,7 +16,7 @@ public class CloudAppApplication {
         System.out.println("CloudApp is starting..."); // Mensagem inicial
 
         char[] spinner = { '\\', '|', '/', '-' };
-        int numIterations = 50;
+        int numIterations = 10;
         long delay = 400;
 
         for (int i = 0; i < numIterations; i++) { // Loop para a animação
