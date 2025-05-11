@@ -13,7 +13,7 @@ public class CloudAppApplication {
 
     @PostConstruct
     public void init() {
-        System.out.println("CloudApp is starting..."); // Mensagem inicial
+        System.out.println("ExerciseTrackingAPI is starting..."); // Mensagem inicial
 
         char[] spinner = { '\\', '|', '/', '-' };
         int numIterations = 10;
@@ -31,11 +31,11 @@ public class CloudAppApplication {
         }
 
         System.out.print("\r");
-        System.out.println("CloudApp is running! Welcome!");
+        System.out.println("ExerciseTrackingAPI is running! Welcome!");
     }
 
     public void start() {
-        System.out.println("CloudApp is running! Welcome!");
+        System.out.println("ExerciseTrackingAPI is running! Welcome!");
         for (int i = 0; i < 10; i++) {
             System.out.println("Iteration " + i);
         }

@@ -22,7 +22,6 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    // Convert Entity to DTO
     private ExerciseDTO convertToDTO(Exercise exercise) {
         ExerciseDTO dto = new ExerciseDTO();
         dto.setId(exercise.getId());
@@ -33,7 +32,6 @@ public class ExerciseService {
         return dto;
     }
 
-    // Convert DTO to Entity
     private Exercise convertToEntity(ExerciseDTO dto) {
         Exercise exercise = new Exercise();
         exercise.setId(dto.getId());
@@ -44,42 +42,35 @@ public class ExerciseService {
         return exercise;
     }
 
-    // Get all exercises
     public List<ExerciseDTO> getAllExercises() {
         return exerciseRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    // Get exercise by ID
+
     public Optional<ExerciseDTO> getExerciseById(Long id) {
         return exerciseRepository.findById(id)
                 .map(this::convertToDTO);
     }
 
-    // Create new exercise
     @Transactional
     public ExerciseDTO createExercise(ExerciseDTO exerciseDTO) {
         try {
-            // Ensure ID is null for new entities
             exerciseDTO.setId(null);
 
             Exercise exercise = convertToEntity(exerciseDTO);
             Exercise savedExercise = exerciseRepository.save(exercise);
             return convertToDTO(savedExercise);
         } catch (org.springframework.orm.ObjectOptimisticLockingFailureException e) {
-            // Specific handling for optimistic locking failures
             throw new RuntimeException("Unable to create exercise due to data conflict. Please do not provide an ID for new exercises.", e);
         } catch (org.springframework.dao.DataIntegrityViolationException e) {
-            // Handles unique constraint violations or other data integrity issues
             throw new RuntimeException("Unable to create exercise due to data integrity issue. Check that all required fields are provided correctly.", e);
         } catch (Exception e) {
-            // Generic error handling
             throw new RuntimeException("An unexpected error occurred while creating the exercise.", e);
         }
     }
 
-    // Update exercise
     @Transactional
     public Optional<ExerciseDTO> updateExercise(Long id, ExerciseDTO exerciseDTO) {
         if (!exerciseRepository.existsById(id)) {
@@ -92,7 +83,6 @@ public class ExerciseService {
         return Optional.of(convertToDTO(updatedExercise));
     }
 
-    // Delete exercise
     @Transactional
     public boolean deleteExercise(Long id) {
         if (!exerciseRepository.existsById(id)) {
@@ -103,21 +93,18 @@ public class ExerciseService {
         return true;
     }
 
-    // Find exercises by description
     public List<ExerciseDTO> findByDescription(String description) {
         return exerciseRepository.findByDescriptionContainingIgnoreCase(description).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    // Find exercises between dates
     public List<ExerciseDTO> findByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return exerciseRepository.findByDateTimeBetween(startDate, endDate).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
-    // Find exercises with minimum duration
     public List<ExerciseDTO> findByMinDuration(Integer minutes) {
         return exerciseRepository.findByDurationMinutesGreaterThanEqual(minutes).stream()
                 .map(this::convertToDTO)

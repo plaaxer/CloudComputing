@@ -10,12 +10,12 @@ import java.util.List;
 @Repository
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
-    // Find exercises by description (case-insensitive, partial match)
+    // procura exercícios por sua descrição (case-insensitive, partial match)
     List<Exercise> findByDescriptionContainingIgnoreCase(String description);
 
-    // Find exercises created between two dates
+    // exercícios criados entre duas datas
     List<Exercise> findByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    // Find exercises with duration greater than or equal to specified minutes
+    // exercícios cuja duração >= desejada
     List<Exercise> findByDurationMinutesGreaterThanEqual(Integer minutes);
 }

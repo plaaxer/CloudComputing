@@ -30,7 +30,6 @@ public class Exercise {
 
     private String notes;
 
-    // Default constructor
     public Exercise() {
         this.dateTime = LocalDateTime.now();
     }
@@ -43,7 +42,6 @@ public class Exercise {
         this.notes = notes;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
